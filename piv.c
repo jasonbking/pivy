@@ -3133,6 +3133,10 @@ piv_change_pin(struct piv_token *pk, enum piv_pin type, const char *pin,
 		err = errf("PermissionError", swerrf("INS_CHANGE_PIN(%x)",
 		    apdu->a_sw, type), "Incorrect PIN supplied");
 
+	} else if (apdu->a_sw == SW_FILE_INVALID) {
+		err = errf("LockError", swerrf("INS_CHANGE_PIN(%x)",
+		    apdu->a_sw, type), "PIN is locked");
+
 	} else {
 		err = swerrf("INS_CHANGE_PIN(%x)", apdu->a_sw, type);
 		bunyan_log(BNY_DEBUG, "unexpected card error",
